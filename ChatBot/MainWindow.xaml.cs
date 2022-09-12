@@ -6,7 +6,10 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Automation.Peers;
+using System.Windows.Automation.Provider;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -15,6 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using AIMLbot;
 
 namespace ChatBot
 {
@@ -39,7 +43,7 @@ namespace ChatBot
             Time = now.ToString("hh:mm");
             Timer.Interval = TimeSpan.FromSeconds(1);
             Timer.Tick += Timer_Tick;
-            Timer.Start();
+            //Timer.Start();
         }
 
         private void Timer_Tick(object sender, EventArgs e)
@@ -88,5 +92,89 @@ namespace ChatBot
                 MessageTxtb.Text = "Type a message";
             }
         }
+
+
+
+        private void SendingMessage()
+        {
+            Border border = new Border()
+            {
+                CornerRadius = new CornerRadius(10),
+                Background = new SolidColorBrush(Color.FromRgb(227, 225, 228)),
+                Width = 170,
+                Height = 25,
+                HorizontalAlignment = HorizontalAlignment.Right,
+                Margin = new Thickness(0, 10, 10, 0)
+            };
+
+            TextBlock textBlock = new TextBlock();
+            textBlock.Text = MessageTxtb.Text;
+            textBlock.FontSize = 15;
+            textBlock.Foreground = new SolidColorBrush(Color.FromRgb(100, 100, 101));
+            textBlock.Margin = new Thickness(10, 0, 0, 0);
+            textBlock.TextWrapping = TextWrapping.Wrap;
+            textBlock.TextTrimming = TextTrimming.None;
+            int charactherCount = MessageTxtb.Text.Length;
+            int size = (charactherCount - 20) / 20 +1;
+            border.Height += size * 15;
+            border.Child = textBlock;
+            MessagesStckPnl.Children.Add(border);
+            MessageTxtb.Text = String.Empty;
+
+            if (MessagesScrollViewer.VerticalOffset == MessagesScrollViewer.ScrollableHeight)
+            {
+                MessagesScrollViewer.ScrollToEnd();
+            }
+        }
+
+        private void ReceiveMessage(string Output)
+        {
+            Border border = new Border()
+            {
+                CornerRadius = new CornerRadius(10),
+                Background = new SolidColorBrush(Color.FromRgb(185, 215, 212)),
+                Width = 170,
+                Height = 25,
+                HorizontalAlignment = HorizontalAlignment.Left,
+                Margin = new Thickness(10, 10, 10, 0)
+            };
+
+            TextBlock textBlock = new TextBlock();
+            textBlock.Text = Output;
+            textBlock.FontSize = 15;
+            textBlock.Foreground = new SolidColorBrush(Color.FromRgb(100, 100, 101));
+            textBlock.Margin = new Thickness(10, 0, 0, 0);
+            textBlock.TextWrapping = TextWrapping.Wrap;
+            textBlock.TextTrimming = TextTrimming.None;
+            int charactherCount = Output.Length;
+            int size = (charactherCount - 20) / 20+1;
+            border.Height += size * 15;
+            border.Child = textBlock;
+            MessagesStckPnl.Children.Add(border);
+            MessageTxtb.Text = String.Empty;
+
+            if (MessagesScrollViewer.VerticalOffset == MessagesScrollViewer.ScrollableHeight)
+            {
+                MessagesScrollViewer.ScrollToEnd();
+            }
+        }
+
+        private void SendBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+            Bot AI = new Bot();
+            AI.loadSettings();
+            AI.loadAIMLFromFiles();
+            AI.isAcceptingUserInput = false;
+            User myuser = new User("ChatBot", AI);
+            AI.isAcceptingUserInput = true;
+            Request r = new Request(MessageTxtb.Text,myuser,AI);
+            Result res = AI.Chat(r);
+            string answer = res.Output;
+
+            SendingMessage();
+            ReceiveMessage(answer);
+        }
+
     }
 }

@@ -99,7 +99,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="30"/>
                     </Grid.ColumnDefinitions>
-                    
+
                     <Button Grid.Column="1"
                             Margin="15"
                             Background="Transparent"
@@ -107,7 +107,7 @@
                             Name="close_btn"
                             Click="close_btn_Click">
                         <Image Source="Images/backIcon.png"/>
-                        
+
                     </Button>
                     <StackPanel Grid.Column="2"
                                 Orientation="Vertical">
@@ -137,10 +137,34 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="70"/>
                     </Grid.RowDefinitions>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                  Margin="0,0,7,0"
+                                  Name="MessagesScrollViewer"
+                                  >
+                        <StackPanel Name="MessagesStckPnl" >
 
-                    <Grid>
+                            <!--<Border CornerRadius="10"
+                                    Background="White"
+                                    Width="170"
+                                    Height="30"
+                                    HorizontalAlignment="Right"
+                                    Margin="0,10,10,0">
+                                <TextBlock
+                                    FontSize="15"
+                                    Foreground="#646465"
+                                    VerticalAlignment="Center"
+                                    Margin="0,0,10,0"
+                                    TextWrapping="Wrap" 
+                                    TextTrimming="None"
+                                     FlowDirection="RightToLeft"
+                                    >
+abcdefrtyuijhgdaxzmjl
+                                </TextBlock>
+                            </Border>-->
 
-                    </Grid>
+
+                        </StackPanel>
+                    </ScrollViewer>
 
                     <StackPanel Grid.Row="1"
                                 Orientation="Horizontal"
@@ -170,7 +194,7 @@
                                          Text="Type a message"
                                          FontWeight="ExtraLight"
                                          >
-                                    
+
                                 </TextBox>
                                 <Button Margin="6,3,3,3"
                                         Width="25"
@@ -178,6 +202,8 @@
                                         Background="Transparent"
                                         BorderThickness="0"
                                         Style="{StaticResource MyButton}"
+                                        Name="SendBtn"
+                                        Click="SendBtn_Click"
                                         >
                                     <Image Source="Images/send.png">
 
