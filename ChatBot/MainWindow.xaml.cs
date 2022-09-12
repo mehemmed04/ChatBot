@@ -120,11 +120,7 @@ namespace ChatBot
             border.Child = textBlock;
             MessagesStckPnl.Children.Add(border);
             MessageTxtb.Text = String.Empty;
-
-            if (MessagesScrollViewer.VerticalOffset == MessagesScrollViewer.ScrollableHeight)
-            {
-                MessagesScrollViewer.ScrollToEnd();
-            }
+            MessagesScrollViewer.ScrollToEnd();
         }
 
         private void ReceiveMessage(string Output)
@@ -153,10 +149,7 @@ namespace ChatBot
             MessagesStckPnl.Children.Add(border);
             MessageTxtb.Text = String.Empty;
 
-            if (MessagesScrollViewer.VerticalOffset == MessagesScrollViewer.ScrollableHeight)
-            {
-                MessagesScrollViewer.ScrollToEnd();
-            }
+            MessagesScrollViewer.ScrollToEnd();
         }
 
         private void SendBtn_Click(object sender, RoutedEventArgs e)
