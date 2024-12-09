@@ -136,7 +136,6 @@ namespace ChatBot
                 Margin = new Thickness(10, 10, 10, 0)
             };
 
-            Output = TranslateToAzerbaijani(Output);
             TextBlock textBlock = new TextBlock();
             textBlock.Text = Output;
             textBlock.FontSize = 15;
@@ -156,33 +155,19 @@ namespace ChatBot
 
         private void SendBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            //dll paketi
             Bot AI = new Bot();
             AI.loadSettings();
             AI.loadAIMLFromFiles();
             AI.isAcceptingUserInput = false;
             User myuser = new User("ChatBot", AI);
             AI.isAcceptingUserInput = true;
-            Request r = new Request(TranslateToEnglish(MessageTxtb.Text),myuser,AI);
+            Request r = new Request(MessageTxtb.Text,myuser,AI);
             Result res = AI.Chat(r);
             string answer = res.Output;
 
             SendingMessage();
             ReceiveMessage(answer);
         }
-
-        private string TranslateToEnglish(string text)
-        {
-            var client = TranslationClient.CreateFromApiKey("AIzaSyC1gksuh6zdF1v-usvS4C90mZU5C2VRL5I");
-            var entext = client.TranslateText(text, LanguageCodes.English, LanguageCodes.Azerbaijani);
-            return entext.TranslatedText;
-        }
-        private string TranslateToAzerbaijani(string text)
-        {
-            var client = TranslationClient.CreateFromApiKey("AIzaSyC1gksuh6zdF1v-usvS4C90mZU5C2VRL5I");
-            var azText = client.TranslateText(text, LanguageCodes.Azerbaijani, LanguageCodes.English);
-            return azText.TranslatedText;
-        }
-
     }
 }
